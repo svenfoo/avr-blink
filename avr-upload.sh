@@ -4,8 +4,9 @@
 ELFFILE=${1}
 
 # We need to use the `avrdude` that comes with the Arduino IDE, it seems
-# to have some custom changes not in the version we installed from Brew, that
-# work with the UPDI-over-USB bootloader on the Arduino Nano Every
+# to have some custom changes not in the version that is installed by Fedora.
+# These seem to be needed to work with the UPDI-over-USB bootloader on the
+# Arduino Nano Every
 AVRDUDE=/home/neo/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/bin/avrdude
 AVRCONF=/home/neo/.arduino15/packages/arduino/tools/avrdude/6.3.0-arduino17/etc/avrdude.conf
 
@@ -38,7 +39,7 @@ done
 # NOW, finally, we can actually upload our code
 ${AVRDUDE} \
    -C ${AVRCONF} \
-   -v -p${PART} \
+   -p${PART} \
    -c${PROGRAMMER} \
    -P${PORT} -b${BAUDRATE} \
    -e -D \
