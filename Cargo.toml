@@ -1,0 +1,8 @@
+[package]
+name = "avr-blink"
+version = "0.1.0"
+authors = ["Sven Neumann <sven@svenfoo.org>"]
+edition = "2018"
+
+[dependencies]
+ruduino = "0.2.7"

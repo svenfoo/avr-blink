@@ -1,0 +1,9 @@
+[build]
+target = "avr-atmega328p.json"
+
+[target.'cfg(target_arch = "avr")']
+runner = "./avr-upload.sh"
+
+[unstable]
+build-std = ["core"]
+build-std-features = ["compiler-builtins-mem"]
