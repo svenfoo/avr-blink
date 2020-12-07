@@ -1,29 +1,29 @@
-#![feature(llvm_asm)]
 #![no_std]
 #![no_main]
 
-use ruduino::cores::atmega328p as avr_core;
-use ruduino::Register;
+extern crate panic_halt;
 
-use avr_core::{DDRB, PORTB};
+use arduino_uno::prelude::*;
 
-#[no_mangle]
-pub extern "C" fn main() {
-    // Set all PORTB pins up as outputs
-    DDRB::set_mask_raw(0xFFu8);
+#[arduino_uno::entry]
+fn main() -> ! {
+    let dp = arduino_uno::Peripherals::take().unwrap();
+    let mut pins = arduino_uno::Pins::new(dp.PORTB, dp.PORTC, dp.PORTD);
+
+    // Digital pin 13 is also connected to an onboard LED marked "L"
+    let mut led = pins.d13.into_output(&mut pins.ddr);
+
+    led.set_high().void_unwrap();
 
     loop {
-        PORTB::set_mask_raw(0xFF);
-        delay(40);
-        PORTB::unset_mask_raw(0xFF);
-        delay(80);
+        led.toggle().void_unwrap();
+        arduino_uno::delay_ms(200);
+        led.toggle().void_unwrap();
+        arduino_uno::delay_ms(200);
+        led.toggle().void_unwrap();
+        arduino_uno::delay_ms(200);
+        led.toggle().void_unwrap();
+        arduino_uno::delay_ms(800);
     }
 }
 
-/// A small busy loop.
-fn delay(usec: u32) {
-    let cycles = usec * 1000;
-    for _ in 0..cycles {
-        unsafe { llvm_asm!("" :::: "volatile") }
-    }
-}
