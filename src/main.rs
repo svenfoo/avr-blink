@@ -3,12 +3,13 @@
 
 extern crate panic_halt;
 
-use arduino_uno::prelude::*;
+use arduino_nano_every as board;
+use board::prelude::*;
 
-#[arduino_uno::entry]
+#[board::entry]
 fn main() -> ! {
-    let dp = arduino_uno::Peripherals::take().unwrap();
-    let mut pins = arduino_uno::Pins::new(dp.PORTB, dp.PORTC, dp.PORTD);
+    let dp = board::Peripherals::take().unwrap();
+    let mut pins = board::Pins::new(dp.PORTA, dp.PORTB, dp.PORTC, dp.PORTD, dp.PORTE, dp.PORTF);
 
     // Digital pin 13 is also connected to an onboard LED marked "L"
     let mut led = pins.d13.into_output(&mut pins.ddr);
@@ -17,13 +18,7 @@ fn main() -> ! {
 
     loop {
         led.toggle().void_unwrap();
-        arduino_uno::delay_ms(200);
-        led.toggle().void_unwrap();
-        arduino_uno::delay_ms(200);
-        led.toggle().void_unwrap();
-        arduino_uno::delay_ms(200);
-        led.toggle().void_unwrap();
-        arduino_uno::delay_ms(800);
+        board::delay_ms(100);
     }
 }
 
